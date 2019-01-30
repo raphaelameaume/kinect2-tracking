@@ -5,9 +5,9 @@ function Kinect2Tracking () {
     this.bodies = [];
 }
 
-Kinect2Tracking.prototype.start = function ( url ) {
+Kinect2Tracking.prototype.listen = function ( url ) {
     var self = this;
-    var socket = io.connect(connectURL);
+    var socket = io.connect(url);
 
     socket.on('bodyFrame', function( bodyFrame) {
         for ( let i = 0; i < bodyFrame.bodies.length; i++ ) {
@@ -18,6 +18,37 @@ Kinect2Tracking.prototype.start = function ( url ) {
             }
         }
     });
+};
+
+Kinect2Tracking.prototype.simulate = function ( data ) {
+    if ( !data.bodyFrame ) {
+        console.error("Kinect2Tracking can not simulate data. Wrong format.");
+    }
+
+    let frameIndex = 0;
+    let self = this;
+
+    function run () {
+        if ( frameIndex < data.bodyFrame.length ) {
+            var frameData = data.bodyFrame[frameIndex];
+
+            for ( let i = 0; i < frameData.bodies.length; i++ ) {
+                if ( !self.bodies[i] ) {
+                    self.bodies[i] = new Kinect2Body(i, frameData.bodies[i]);
+                } else {
+                    self.bodies[i].update(frameData.bodies[i]);
+                }
+            }
+
+            frameIndex++;
+        } else {
+            frameIndex = 0;
+        }
+
+        requestAnimationFrame(run);
+    }
+
+    run();
 };
 
 Kinect2Tracking.prototype.getJoint = function ( bodyIndex, jointName ) {

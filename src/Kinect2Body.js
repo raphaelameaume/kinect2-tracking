@@ -16,10 +16,10 @@ Kinect2Body.prototype.update = function ( data ) {
     if ( !this.tracked || !data.joints ) return;
 
     for ( let i = 0; i < data.joints.length; i++ ) {
-        if ( !joints[i] ) {
-            joints[i] = new Kinect2Joint(i, data.joints[i]);
+        if ( !this.joints[i] ) {
+            this.joints[i] = new Kinect2Joint(i, data.joints[i]);
         } else {
-            joints[i].update(data.joints[i]);
+            this.joints[i].update(data.joints[i]);
         }
     }
 };

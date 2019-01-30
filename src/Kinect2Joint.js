@@ -30,7 +30,7 @@ Kinect2Joint.prototype.update = function ( data ) {
     this.cameraVelocity[1] = data.cameraY - this.cameraY;
     this.cameraVelocity[2] = data.cameraZ - this.cameraZ;
     
-    this.trackingState = trackingState;
+    this.trackingState = data.trackingState;
 
     this.depthX = data.depthX;
     this.depthY = data.depthY;

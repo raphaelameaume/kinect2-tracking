@@ -8,8 +8,7 @@
   },
   "author": "Raphaël Améaume <raphael.ameaume@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "socket.io": "^2.2.0"
   }
