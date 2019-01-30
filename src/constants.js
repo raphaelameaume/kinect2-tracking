@@ -1,0 +1,67 @@
+var Joints = {
+	SPINE_BASE: 0,
+	SPINE_MID: 1,
+	NECK: 2,
+	HEAD: 3,
+	SHOULDER_LEFT: 4,
+	ELBOW_LEFT: 5,
+	WRIST_LEFT: 6,
+	HAND_LEFT: 7,
+	SHOULDER_RIGHT: 8,
+	ELBOW_RIGHT: 9,
+	WRIST_RIGHT: 10,
+	HAND_RIGHT: 11,
+	HIP_LEFT: 12,
+	KNEE_LEFT: 13,
+	ANKLE_LEFT: 14,
+	FOOT_LEFT: 15,
+	HIP_RIGHT: 16,
+	KNEE_RIGHT: 17,
+	ANKLE_RIGHT: 18,
+	FOOT_RIGHT: 19,
+	SPINE_SHOULDER: 20,
+	HAND_TIP_LEFT: 21,
+	THUMB_LEFT: 22,
+	HAND_TIP_RIGHT: 23,
+	THUMB_RIGHT: 24
+};
+
+var Junctions = {
+    HEAD_NECK: [ Joints.HEAD, Joints.NECK ],
+    NECK_SPINE: [ Joints.NECK, Joints.SPINE_MID ],
+    SPINE: [ Joints.SPINE_MID, SPINE_BASE ],
+
+    NECK_SHOULDER_LEFT: [ Joints.NECK, Joints.SHOULDER_LEFT ],
+    NECK_SHOULDER_RIGHT: [ Joints.NECK, Joints.SHOULDER_RIGHT ],
+
+    SHOULDER_ELBOW_LEFT: [ Joints.SHOULDER_LEFT, Joints.ELBOW_LEFT ],
+    SHOULDER_ELBOW_RIGHT: [ Joints.SHOULDER_RIGHT, Joints.ELBOW_RIGHT ],
+
+    ELBOW_WRIST_LEFT: [ Joints.ELBOW_LEFT, Joints.WRIST_LEFT ],
+    ELBOW_WRIST_RIGHT: [ Joints.ELBOW_RIGHT, JOINT.WRIST_RIGHT ],
+
+    WRIST_HAND_LEFT: [ Joints.WRIST_LEFT, Joints.HAND_LEFT ],
+    WRIST_HAND_RIGHT: [ Joints.WRIST_RIGHT, Joints.HAND_RIGHT ],
+
+    HAND_TIP_LEFT: [ Joints.HAND_LEFT, Joints.HAND_TIP_LEFT ],
+    HAND_TIP_RIGHT: [ Joints.HAND_RIGHT, Joints.HAND_TIP_RIGHT ],
+    
+    SPINE_HIP_LEFT: [ Joints.SPINE_BASE, Joints.HIP_LEFT ],
+    SPINE_HIP_RIGHT: [ Joints.SPINE_BASE, Joints.HIP_RIGHT ],
+
+    HIP_KNEE_LEFT: [ Joints.HIP_LEFT, Joints.KNEE_LEFT ],
+    HIP_KNEE_RIGHT: [ Joints.HIP_RIGHT, Joints.KNEE_RIGHT ],
+
+    KNEE_ANKLE_LEFT: [ Joints.KNEE_LEFT, Joints.ANKLE_LEFT ],
+    KNEE_ANKLE_RIGHT: [ Joints.KNEE_RIGHT, Joints.ANKLE_RIGHT ],
+
+    ANKLE_FOOT_LEFT: [ Joints.ANKLE_LEFT, Joints.FOOT_LEFT ],
+    ANKLE_FOOT_RIGHT: [ Joints.ANKLE_RIGHT, Joints.FOOT_RIGHT ],
+};
+
+var constants = {
+    Joints: Joints,
+    Junctions: Junctions,
+};
+
+module.exports = constants;

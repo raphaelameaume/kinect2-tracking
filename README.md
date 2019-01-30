@@ -1,3 +1,4 @@
-## Kinect tracking
+# kinect2-tracking
+Tiny wrapper to read Kinect data provided by kinect-tracking-server
 
-Work in progress
+WIP

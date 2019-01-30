@@ -1,4 +1,4 @@
-function KinectJoint ( index, data ) {
+function Kinect2Joint ( index, data ) {
     this.index = index;
     this.trackingState = data.trackingState;
     
@@ -22,7 +22,7 @@ function KinectJoint ( index, data ) {
     this.cameraVelocity = [0, 0, 0];
 }
 
-KinectJoint.prototype.update = function ( data ) {
+Kinect2Joint.prototype.update = function ( data ) {
     this.depthVelocity[0] = data.depthX - this.depthX;
     this.depthVelocity[1] = data.depthY - this.depthY;
 
@@ -49,4 +49,4 @@ KinectJoint.prototype.update = function ( data ) {
     this.orientationW = data.orientationW;
 };
 
-module.exports = KinectJoint;
+module.exports = Kinect2Joint;

@@ -1,10 +1,8 @@
-var Joints = require('./Joints');
-var Junctions = require('./Junctions');
-var KinectBody = require('./KinectBody');
-var KinectJoint = require('./KinectJoint');
-var KinectTracking = require('./KinectTracking');
+var Kinect2Body = require('./Kinect2Body');
+var Kinect2Joint = require('./Kinect2Joint');
+var Kinect2Tracking = require('./Kinect2Tracking');
 
-KinectTracking.Joints = Joints;
-KinectTracking.Junctions = Junctions;
+Kinect2Tracking.Joints = Kinect2Body.Joints;
+Kinect2Tracking.Junctions = Kinect2Body.Junctions;
 
-module.exports = KinectTracking;
+module.exports = Kinect2Tracking;
