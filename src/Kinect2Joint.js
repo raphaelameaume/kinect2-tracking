@@ -1,5 +1,7 @@
-function Kinect2Joint ( index, data ) {
-    this.index = index;
+function Kinect2Joint ( id, name, data ) {
+    this.id = id;
+    this.name = name;
+
     this.trackingState = data.trackingState;
     
     this.depthX = data.depthX;

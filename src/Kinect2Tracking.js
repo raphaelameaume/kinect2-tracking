@@ -20,30 +20,36 @@ Kinect2Tracking.prototype.listen = function ( url ) {
     });
 };
 
-Kinect2Tracking.prototype.simulate = function ( data ) {
+Kinect2Tracking.prototype.simulate = function ( data, speed ) {
     if ( !data.bodyFrame ) {
         console.error("Kinect2Tracking can not simulate data. Wrong format.");
     }
 
     let frameIndex = 0;
+    let frameId = 0;
     let self = this;
+    let frameRate = 1 / speed || 1;
 
     function run () {
-        if ( frameIndex < data.bodyFrame.length ) {
-            var frameData = data.bodyFrame[frameIndex];
+        if ( frameId < data.bodyFrame.length ) {
+            var frameData = data.bodyFrame[frameId];
 
-            for ( let i = 0; i < frameData.bodies.length; i++ ) {
-                if ( !self.bodies[i] ) {
-                    self.bodies[i] = new Kinect2Body(i, frameData.bodies[i]);
-                } else {
-                    self.bodies[i].update(frameData.bodies[i]);
+            if ( ( frameIndex % frameRate ) === 0 ) {
+                for ( let i = 0; i < frameData.bodies.length; i++ ) {
+                    if ( !self.bodies[i] ) {
+                        self.bodies[i] = new Kinect2Body(i, frameData.bodies[i]);
+                    } else {
+                        self.bodies[i].update(frameData.bodies[i]);
+                    }
                 }
+            
+                frameId++;
             }
-
-            frameIndex++;
         } else {
-            frameIndex = 0;
+            frameId = 0;
         }
+
+        frameIndex++;
 
         requestAnimationFrame(run);
     }

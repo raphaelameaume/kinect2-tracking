@@ -1,6 +1,7 @@
 var constants = require('./constants');
 var Kinect2Joint = require('./Kinect2Joint');
 
+var JointsNames = Object.keys(constants.Joints);
 var JunctionNames = Object.keys(constants.Junctions);
 
 function Kinect2Body ( index, data ) {
@@ -17,7 +18,7 @@ Kinect2Body.prototype.update = function ( data ) {
 
     for ( let i = 0; i < data.joints.length; i++ ) {
         if ( !this.joints[i] ) {
-            this.joints[i] = new Kinect2Joint(i, data.joints[i]);
+            this.joints[i] = new Kinect2Joint(i, JointsNames[i], data.joints[i]);
         } else {
             this.joints[i].update(data.joints[i]);
         }
