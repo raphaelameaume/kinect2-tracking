@@ -1,91 +1,100 @@
-var io = require('socket.io-client');
-var Kinect2Body = require('./Kinect2Body');
+import Kinect2Body from './Kinect2Body.js';
+import Joints from './Joints.js';
+import Junctions from './Junctions.js';
 
-function Kinect2Tracking () {
-    this.bodies = [];
+class Kinect2Tracking {
+
+    constructor () {
+        this.bodies = [];
+    }
+
+    listen ( socket ) {
+        if ( !socket || socket && !socket.io ) {
+            console.error("Kinect2Tracking :: you need to provide a socket instance.");
+            return;
+        }
+
+        socket.on('bodyFrame', ( bodyFrame ) => {
+            for ( let i = 0; i < bodyFrame.bodies.length; i++ ) {
+                if ( !this.bodies[i] ) {
+                    this.bodies[i] = new Kinect2Body(i, bodyFrame.bodies[i]);
+                } else {
+                    this.bodies[i].update(bodyFrame.bodies[i]);
+                }
+            }
+        });
+    }
+
+    simulate ( data, speed ) {
+        if ( !data.bodyFrame ) {
+            console.error("Kinect2Tracking can not simulate data. Wrong format.");
+        }
+    
+        let frameIndex = 0;
+        let frameId = 0;
+        let frameRate = 1 / speed || 1;
+    
+        const run = () => {
+            if ( frameId < data.bodyFrame.length ) {
+                const frameData = data.bodyFrame[frameId];
+    
+                if ( ( frameIndex % frameRate ) === 0 ) {
+                    for ( let i = 0; i < frameData.bodies.length; i++ ) {
+                        if ( !this.bodies[i] ) {
+                            this.bodies[i] = new Kinect2Body(i, frameData.bodies[i]);
+                        } else {
+                            this.bodies[i].update(frameData.bodies[i]);
+                        }
+                    }
+                
+                    frameId++;
+                }
+            } else {
+                frameId = 0;
+            }
+    
+            frameIndex++;
+    
+            requestAnimationFrame(run);
+        }
+    
+        run();
+    }
+
+    getJoint ( bodyIndex, jointName ) {
+        if ( !this.bodies[bodyIndex] ) {
+            console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
+            return;
+        }
+    
+        return this.bodies[bodyIndex].getJoint(jointName);
+    }
+
+    getJunction ( bodyIndex, junctionName ) {
+        if ( !this.bodies[bodyIndex] ) {
+            console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
+            return;
+        }
+    
+        return this.bodies[bodyIndex].getJunction(junctionName);
+    }
+
+    getBody () {
+        if ( !this.bodies[bodyIndex] ) {
+            console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
+            return;
+        }
+    
+        return this.bodies[bodyIndex];
+    }
+
+    getBodies () {
+        return this.bodies;
+    }
+
 }
 
-Kinect2Tracking.prototype.listen = function ( url ) {
-    var self = this;
-    var socket = io.connect(url);
+Kinect2Tracking.Joints = Joints;
+Kinect2Tracking.Junctions = Junctions;
 
-    socket.on('bodyFrame', function( bodyFrame) {
-        for ( let i = 0; i < bodyFrame.bodies.length; i++ ) {
-            if ( !self.bodies[i] ) {
-                self.bodies[i] = new Kinect2Body(i, bodyFrame.bodies[i]);
-            } else {
-                self.bodies[i].update(bodyFrame.bodies[i]);
-            }
-        }
-    });
-};
-
-Kinect2Tracking.prototype.simulate = function ( data, speed ) {
-    if ( !data.bodyFrame ) {
-        console.error("Kinect2Tracking can not simulate data. Wrong format.");
-    }
-
-    let frameIndex = 0;
-    let frameId = 0;
-    let self = this;
-    let frameRate = 1 / speed || 1;
-
-    function run () {
-        if ( frameId < data.bodyFrame.length ) {
-            var frameData = data.bodyFrame[frameId];
-
-            if ( ( frameIndex % frameRate ) === 0 ) {
-                for ( let i = 0; i < frameData.bodies.length; i++ ) {
-                    if ( !self.bodies[i] ) {
-                        self.bodies[i] = new Kinect2Body(i, frameData.bodies[i]);
-                    } else {
-                        self.bodies[i].update(frameData.bodies[i]);
-                    }
-                }
-            
-                frameId++;
-            }
-        } else {
-            frameId = 0;
-        }
-
-        frameIndex++;
-
-        requestAnimationFrame(run);
-    }
-
-    run();
-};
-
-Kinect2Tracking.prototype.getJoint = function ( bodyIndex, jointName ) {
-    if ( !this.bodies[bodyIndex] ) {
-        console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
-        return;
-    }
-
-    return this.bodies[bodyIndex].getJoint(jointName);
-};
-
-Kinect2Tracking.prototype.getJunction = function ( bodyIndex, junctionName ) {
-    if ( !this.bodies[bodyIndex] ) {
-        console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
-        return;
-    }
-
-    return this.bodies[bodyIndex].getJoint(jointName);
-};
-
-Kinect2Tracking.prototype.getBody = function ( bodyIndex ) {
-    if ( !this.bodies[bodyIndex] ) {
-        console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
-        return;
-    }
-
-    return this.bodies[bodyIndex];
-};
-
-Kinect2Tracking.prototype.getBodies = function () {
-    return this.bodies;
-};
-
-module.exports = Kinect2Tracking;
+export default Kinect2Tracking;

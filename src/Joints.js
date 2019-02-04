@@ -1,4 +1,4 @@
-var Joints = {
+const Joints = {
 	SPINE_BASE: 0,
 	SPINE_MID: 1,
 	NECK: 2,
@@ -26,4 +26,4 @@ var Joints = {
 	THUMB_RIGHT: 24
 };
 
-module.exports = Joints;
+export default Joints;

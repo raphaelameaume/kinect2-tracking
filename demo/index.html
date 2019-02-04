@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kinect2 Tracking - Demo</title>
+    </head>
+    <body style="margin: 0px; padding: 0px;">
+        <script type="text/javascript" src="three.min.js"></script>
+        <script type="text/javascript" src="socket.io.js"></script>
+        <script type="module">
+            import Kinect2Tracking from '../index.js';
+
+            const kinectTracking = new Kinect2Tracking();
+
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor('#000', 1);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            document.body.appendChild(renderer.domElement);
+
+            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+            camera.position.set(0, 0, -10);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+            const scene = new THREE.Scene();
+
+            const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+
+            const skeletons = {};
+
+            async function init() {
+                // kinectTracking.listen(io.connect('http://localhost:3001'));
+
+                const response = await fetch('/samples/boxer.json');
+                const data = await response.json();
+                kinectTracking.simulate(data);
+
+                update ();
+            }   
+
+            function resize () {
+                camera.aspect = window.innerWidth / window.innerHeight;
+			    camera.updateProjectionMatrix();
+                
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            function update () {
+                const bodies = kinectTracking.getBodies();
+
+                bodies.forEach( ( body ) => {
+                    const { tracked, bodyIndex } = body;
+                    
+                    let skeleton = skeletons[bodyIndex];
+
+                    if ( tracked ) {
+                        if ( !skeleton ) {
+                            skeleton = new THREE.Object3D();
+                            skeletons[bodyIndex] = skeleton;
+                            scene.add(skeleton);
+                        }
+
+                        skeleton.visible = true;
+
+                        const joints = body.getJoints();
+                        // const junctions = body.getJunctions();
+
+                        joints.forEach( joint => {
+                            if (! skeleton[joint.name] ) {
+                                const mesh = new THREE.Mesh(geometry);
+                                skeleton.add(mesh);
+                                skeleton[joint.name] = mesh;
+                            }
+
+                            skeleton[joint.name].position.set(joint.cameraX, joint.cameraY, joint.cameraZ).multiplyScalar(10);
+						    skeleton[joint.name].quaternion.set(joint.orientationX, joint.orientationY, joint.orientationZ, joint.orientationW);
+                        });
+
+                        // if ( !skeleton. ) {
+
+                        // }
+                    } else if ( skeleton ) {
+                        skeleton.visible = false;
+                    }
+                });
+
+                console.log(skeletons);
+
+                renderer.render(scene, camera);
+
+                requestAnimationFrame(update);
+            }
+
+            init();
+        </script>
+    </body>
+</html>

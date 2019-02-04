@@ -1,9 +1,9 @@
-var Joints = require('./Joints');
+import Joints from './Joints.js';
 
-var Junctions = {
+const Junctions = {
     HEAD_NECK: [ Joints.HEAD, Joints.NECK ],
     NECK_SPINE: [ Joints.NECK, Joints.SPINE_MID ],
-    SPINE: [ Joints.SPINE_MID, SPINE_BASE ],
+    SPINE: [ Joints.SPINE_MID, Joints.SPINE_BASE ],
 
     NECK_SHOULDER_LEFT: [ Joints.NECK, Joints.SHOULDER_LEFT ],
     NECK_SHOULDER_RIGHT: [ Joints.NECK, Joints.SHOULDER_RIGHT ],
@@ -12,7 +12,7 @@ var Junctions = {
     SHOULDER_ELBOW_RIGHT: [ Joints.SHOULDER_RIGHT, Joints.ELBOW_RIGHT ],
 
     ELBOW_WRIST_LEFT: [ Joints.ELBOW_LEFT, Joints.WRIST_LEFT ],
-    ELBOW_WRIST_RIGHT: [ Joints.ELBOW_RIGHT, JOINT.WRIST_RIGHT ],
+    ELBOW_WRIST_RIGHT: [ Joints.ELBOW_RIGHT, Joints.WRIST_RIGHT ],
 
     WRIST_HAND_LEFT: [ Joints.WRIST_LEFT, Joints.HAND_LEFT ],
     WRIST_HAND_RIGHT: [ Joints.WRIST_RIGHT, Joints.HAND_RIGHT ],
@@ -33,4 +33,4 @@ var Junctions = {
     ANKLE_FOOT_RIGHT: [ Joints.ANKLE_RIGHT, Joints.FOOT_RIGHT ],
 };
 
-module.exports = Junctions;
+export default Joints;
