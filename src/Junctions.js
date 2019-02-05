@@ -33,4 +33,4 @@ const Junctions = {
     ANKLE_FOOT_RIGHT: [ Joints.ANKLE_RIGHT, Joints.FOOT_RIGHT ],
 };
 
-export default Joints;
+export default Junctions;
