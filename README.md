@@ -1,5 +1,5 @@
 # kinect2-tracking
-[![dependencies](https://img.shields.io/badge/dependencies-none-ff69b4.svg)](https://github.com/raphaelameaume/kinect2-tracking/blob/master/package.json)
+[![dependencies](https://img.shields.io/badge/dependencies-none-ff69b4.svg)](https://github.com/raphaelameaume/kinect2-tracking/blob/master/package.json)\
 Tiny wrapper to read Kinect data provided by [kinect-tracking-server](https://github.com/raphaelameaume/kinect2-tracking-server)
 
 > :warning: This is an ES6 library made for experimental purpose.
@@ -67,6 +67,54 @@ import { Junctions } from 'kinect2-tracking';
 
 const [ shoulderLeft, elbowLeft ] = body.getJunction(Junctions.SHOULDER_ELBOW_LEFT);
 ```
+
+## API
+
+### Kinect2Tracking
+
+#### `Kinect2Tracking.listen(socket)`
+Connect to a socket streaming kinect data, typically [kinect-tracking-server](https://github.com/raphaelameaume/kinect2-tracking-server)
+
+#### `Kinect2Tracking.simulate(data, speed)`
+Loop over a set of data, recorded by [kinect-tracking-server](https://github.com/raphaelameaume/kinect2-tracking-server). 
+See available [samples](https://github.com/raphaelameaume/kinect2-tracking/tree/master/samples).
+
+#### `Kinect2Tracking.getBodies()`
+Returns an array of potential Kinect2Body (tracked or not).
+
+#### `Kinect2Tracking.getBody(bodyIndex)`
+Returns a Kinect2Body ( tracked or not).
+
+#### `Kinect2Tracking.getJoint(bodyIndex, jointName)`
+Returns data for a specific joint on a specific body. Returns undefined if body is not tracked.\
+See Joints for details.
+
+#### `Kinect2Tracking.getJoints(bodyIndex)`
+Returns all tracked joints of a specific body. Returns an empty array if body is not tracked.
+
+#### `Kinect2Tracking.getJunction(bodyIndex)`
+Returns data for a specific junction on a specific body. Returns an empty array if body is not tracked.\
+See Junctions for details.
+
+#### `Kinect2Tracking.getJunctions(bodyIndex)`
+Returns all tracked junctions of a specific body. Returns an empty array if body is not tracked.
+
+### Kinect2Body
+#### `Kinect2Body.getJoint(jointName)`
+Returns a Kinect2Joint. Returns undefined if body is not tracked.
+See Joints for details.
+
+#### `Kinect2Body.getJoints()`
+Returns all tracked joints of the body. Returns an empty array if body is not tracked.
+
+#### `Kinect2Body.getJunction(junctionName)`
+Returns an array of two Kinect2Joint for a specific junction. Returns an empty array if body is not tracked.
+See Junctions for details.
+
+#### `Kinect2Body.getJunctions()`
+Returns a two dimensional array of Kinect2Joint. Returns an empty array if body is not tracked.
+
+
 
 ## License
 MIT, see [LICENSE.md](https://github.com/raphaelameaume/kinect2-tracking/blob/master/LICENSE.md) for details.

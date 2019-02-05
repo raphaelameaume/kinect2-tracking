@@ -75,6 +75,15 @@ class Kinect2Tracking {
         return this.bodies[bodyIndex].getJoint(jointName);
     }
 
+    getJoints ( bodyIndex ) {
+        if ( !this.bodies[bodyIndex] ) {
+            console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
+            return;
+        }
+    
+        return this.bodies[bodyIndex].getJoints();
+    }
+
     getJunction ( bodyIndex, junctionName ) {
         if ( !this.bodies[bodyIndex] ) {
             console.error("Kinect2Tracking can not access data for bodyIndex " + bodyIndex);
