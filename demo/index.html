@@ -5,11 +5,12 @@
     </head>
     <body style="margin: 0px; padding: 0px;">
         <script type="text/javascript" src="three.min.js"></script>
+        <script type="text/javascript" src="dat.gui.js"></script>
         <script type="text/javascript" src="socket.io.js"></script>
         <script type="module">
             import Kinect2Tracking, { Kinect2Joint } from '../index.js';
 
-            Kinect2Joint.lerpFactor = 0.5;
+            Kinect2Joint.lerpFactor = 0.1;
 
             const kinectTracking = new Kinect2Tracking();
 
@@ -26,20 +27,43 @@
 
             const scene = new THREE.Scene();
 
-            const geometry = new THREE.BoxGeometry(0.06, 0.06, 0.06);
+            // const jointGeometry = new THREE.BoxGeometry(0.04, 0.04, 0.04);
+            const jointGeometry = new THREE.SphereGeometry(0.04, 32, 32);
+            const junctionGeometry = new THREE.CylinderGeometry(0.02, 0.02, 1);
             const material = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
+
+            const samples = {
+                'boxing': '/samples/boxer.json',
+                'dance': '/samples/dance.json',
+                'jump': '/samples/jump.json',
+                'legs': '/samples/legs.json',
+                'squat': '/samples/squat.json',
+                'walker': '/samples/walker.json',
+            };
+
+            const currentSample = { value: samples.boxing };
+
+            const settings = {
+                sample: samples.boxing,
+                speed: 0.5,
+            };
+
+            const gui = new dat.GUI();
+            gui.add(settings, 'sample', samples).onChange(init);
+            // gui.add(Kinect2Joint, 'lerpFactor', 0, 1);
 
             const skeletons = {};
 
             async function init() {
                 // kinectTracking.listen(io.connect('http://localhost:3001'));
 
-                const response = await fetch('/samples/dance.json');
+                const response = await fetch(settings.sample);
                 const data = await response.json();
-                kinectTracking.simulate(data, 0.5);
 
-                update ();
-            }   
+                kinectTracking.simulate(data, settings.speed);
+
+                update();
+            }
 
             function resize () {
                 camera.aspect = window.innerWidth / window.innerHeight;
@@ -70,13 +94,13 @@
                         
                         joints.forEach( ( joint, index ) => {
                             if (! skeleton[joint.name] ) {
-                                const mesh = new THREE.Mesh(geometry, material);
+                                const mesh = new THREE.Mesh(jointGeometry, material);
                                 skeleton.add(mesh);
                                 skeleton[joint.name] = mesh;
 
                                 const helper = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(), 0);
                                 mesh.helper = helper;
-							    scene.add(helper);
+							    // scene.add(helper);
                             }
 
                             skeleton[joint.name].position.set(joint.cameraX, joint.cameraY, joint.cameraZ);
@@ -92,10 +116,30 @@
                         const junctions = body.getJunctions();
 
                         junctions.forEach( ( junction, index ) => {
+                            const name = `junction__${index}`;
 
+                            let mesh = skeleton[name];
+
+                            if ( !mesh ) {
+                                mesh = new THREE.Mesh(junctionGeometry, new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+                                scene.add(mesh);
+
+                                skeleton[name] = mesh;
+                            }
+
+                            const p0 = new THREE.Vector3(junction[0].cameraX, junction[0].cameraY, junction[0].cameraZ);
+                            const p1 = new THREE.Vector3(junction[1].cameraX, junction[1].cameraY, junction[1].cameraZ);
+
+                            const direction = new THREE.Vector3().subVectors(p0, p1);
+                            const orientation = new THREE.Matrix4();
+                            orientation.lookAt(p1, p0, new THREE.Vector3(0, 1, 0));
+                            orientation.multiply(new THREE.Matrix4().set(1,0,0,0,0,0,1,0, 0,-1,0,0, 0,0,0,1));
+
+                            mesh.quaternion.setFromRotationMatrix(orientation);
+
+                            mesh.scale.y = direction.length();
+                            mesh.position.copy(p0).add(p1).multiplyScalar(0.5);
                         });
-
-
                     } else if ( skeleton ) {
                         skeleton.visible = false;
                     }

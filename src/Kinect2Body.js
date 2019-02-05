@@ -51,17 +51,19 @@ class Kinect2Body {
         }
 
         return [
-            this.joints[Joints[junction[0]]], 
-            this.joints[Joints[junction[1]]],
+            this.joints[junction[0]], 
+            this.joints[junction[1]],
         ];
     }
 
     getJunctions () {
         const junctions = [];
 
-        for ( let i = 0; i < JunctionNames.length; i++ ) {
-            const junction = this.getJunction(JunctionNames[i]);
-            junctions.push(junction);
+        if ( this.joints.length > 0 ) {
+            for ( let i = 0; i < JunctionNames.length; i++ ) {
+                const junction = this.getJunction(JunctionNames[i]);
+                junctions.push(junction);
+            }
         }
     
         return junctions;

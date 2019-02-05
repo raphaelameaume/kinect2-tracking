@@ -6,6 +6,7 @@ class Kinect2Tracking {
 
     constructor () {
         this.bodies = [];
+        this.simulation = null;
     }
 
     listen ( socket ) {
@@ -33,6 +34,10 @@ class Kinect2Tracking {
         let frameIndex = 0;
         let frameId = 0;
         let frameRate = 1 / speed || 1;
+
+        if ( this.simulation ) {
+            cancelAnimationFrame(this.simulation);
+        }
     
         const run = () => {
             if ( frameId < data.bodyFrame.length ) {
@@ -55,7 +60,7 @@ class Kinect2Tracking {
     
             frameIndex++;
     
-            requestAnimationFrame(run);
+            this.simulation = requestAnimationFrame(run);
         }
     
         run();
