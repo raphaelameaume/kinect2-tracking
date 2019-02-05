@@ -1,15 +1,20 @@
 {
   "name": "kinect2-tracking",
   "version": "0.0.1",
-  "description": "\"Tiny wrapper to read Kinect data provided by kinect-tracking-server\"",
+  "description": "Tiny wrapper to read Kinect data provided by kinect-tracking-server",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Raphaël Améaume <raphael.ameaume@gmail.com>",
+  "scripts": {},
+  "author": "Raphaël Améaume",
   "license": "MIT",
   "devDependencies": {},
-  "dependencies": {
-    "socket.io": "^2.2.0"
+  "dependencies": {},
+  "keywords": [
+    "kinect",
+    "kinect2",
+    "tracking"
+  ],
+  "homepage": "https://github.com/raphaelameaume/kinect2-tracking",
+  "bugs": {
+    "url": "https://github.com/raphaelameaume/kinect2-tracking/issues"
   }
 }

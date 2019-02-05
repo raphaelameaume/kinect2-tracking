@@ -14,7 +14,9 @@
 
             const kinectTracking = new Kinect2Tracking();
 
-            const renderer = new THREE.WebGLRenderer();
+            const renderer = new THREE.WebGLRenderer({
+                antialias: true,
+            });
             renderer.setClearColor('#000', 1);
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
