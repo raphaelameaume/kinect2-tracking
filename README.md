@@ -9,7 +9,7 @@ Tiny wrapper to read Kinect data provided by [kinect-tracking-server](https://gi
 ```bash
 npm install kinect2-tracking
 ```
-
+___
 ## Usage
 
 Import the library
@@ -67,7 +67,7 @@ import { Junctions } from 'kinect2-tracking';
 
 const [ shoulderLeft, elbowLeft ] = body.getJunction(Junctions.SHOULDER_ELBOW_LEFT);
 ```
-
+___
 ## API
 
 ### Kinect2Tracking
@@ -92,7 +92,7 @@ See Joints for details.
 #### `Kinect2Tracking.getJoints(bodyIndex)`
 Returns all tracked joints of a specific body. Returns an empty array if body is not tracked.
 
-#### `Kinect2Tracking.getJunction(bodyIndex)`
+#### `Kinect2Tracking.getJunction(bodyIndex, junctionName)`
 Returns data for a specific junction on a specific body. Returns an empty array if body is not tracked.\
 See Junctions for details.
 
@@ -114,6 +114,59 @@ See Junctions for details.
 #### `Kinect2Body.getJunctions()`
 Returns a two dimensional array of Kinect2Joint. Returns an empty array if body is not tracked.
 
+### Joints
+name|id
+---|---
+SPINE_BASE | 0
+SPINE_MID | 1
+NECK | 2
+HEAD | 3
+SHOULDER_LEFT | 4
+ELBOW_LEFT | 5
+WRIST_LEFT | 6
+HAND_LEFT | 7
+SHOULDER_RIGHT | 8
+ELBOW_RIGHT | 9
+WRIST_RIGHT | 10
+HAND_RIGHT | 11
+HIP_LEFT | 12
+KNEE_LEFT | 13
+ANKLE_LEFT | 14
+FOOT_LEFT | 15
+HIP_RIGHT | 16
+KNEE_RIGHT | 17
+ANKLE_RIGHT | 18
+FOOT_RIGHT | 19
+SPINE_SHOULDER | 20
+HAND_TIP_LEFT | 21
+THUMB_LEFT | 22
+HAND_TIP_RIGHT | 23
+THUMB_RIGHT | 24
+
+### Junctions
+name|joints
+---|---
+HEAD_NECK | [ HEAD, NECK ]
+NECK_SPINE | [ NECK, SPINE_MID ]
+SPINE | [ SPINE_MID, SPINE_BASE ]
+NECK_SHOULDER_LEFT | [ NECK, SHOULDER_LEFT ]
+NECK_SHOULDER_RIGHT | [ NECK, SHOULDER_RIGHT ]
+SHOULDER_ELBOW_LEFT | [ SHOULDER_LEFT, ELBOW_LEFT ]
+SHOULDER_ELBOW_RIGHT | [ SHOULDER_RIGHT, ELBOW_RIGHT ]
+ELBOW_WRIST_LEFT | [ ELBOW_LEFT, WRIST_LEFT ]
+ELBOW_WRIST_RIGHT | [ ELBOW_RIGHT, WRIST_RIGHT ]
+WRIST_HAND_LEFT | [ WRIST_LEFT, HAND_LEFT ]
+WRIST_HAND_RIGHT | [ WRIST_RIGHT, HAND_RIGHT ]
+HAND_TIP_LEFT | [ HAND_LEFT, HAND_TIP_LEFT ]
+HAND_TIP_RIGHT | [ HAND_RIGHT, HAND_TIP_RIGHT ]
+SPINE_HIP_LEFT | [ SPINE_BASE, HIP_LEFT ]
+SPINE_HIP_RIGHT | [ SPINE_BASE, HIP_RIGHT ]
+HIP_KNEE_LEFT | [ HIP_LEFT, KNEE_LEFT ]
+HIP_KNEE_RIGHT | [ HIP_RIGHT, KNEE_RIGHT ]
+KNEE_ANKLE_LEFT | [ KNEE_LEFT, ANKLE_LEFT ]
+KNEE_ANKLE_RIGHT | [ KNEE_RIGHT, ANKLE_RIGHT ]
+ANKLE_FOOT_LEFT | [ ANKLE_LEFT, FOOT_LEFT ]
+ANKLE_FOOT_RIGHT | [ ANKLE_RIGHT, FOOT_RIGHT ]
 
 
 ## License
